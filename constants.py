@@ -42,8 +42,9 @@ APP_BOOT_MESSAGE = "アプリが起動されました。"
 MODEL = "gpt-4o-mini"
 TEMPERATURE = 0.5
 # チャンクサイズとオーバーラップの値指定　問題2
-chunk_size = 500
-chunk_overlap = 50
+# CSVの従業員データを十分に含めるため、チャンクサイズを拡大
+chunk_size = 2000
+chunk_overlap = 200
 
 
 # ==========================================

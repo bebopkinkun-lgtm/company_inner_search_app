@@ -11,6 +11,7 @@ from logging.handlers import TimedRotatingFileHandler
 from uuid import uuid4
 import sys
 import unicodedata
+import csv
 from dotenv import load_dotenv
 import streamlit as st
 from docx import Document
@@ -18,6 +19,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain.schema import Document as LangChainDocument
 import constants as ct
 
 
@@ -140,8 +142,9 @@ def initialize_retriever():
     db = Chroma.from_documents(splitted_docs, embedding=embeddings)
 
     # ベクターストアを検索するRetrieverの作成  問題1
+    # CSVの従業員データを十分に取得するため、kを増やす
     #st.session_state.retriever = db.as_retriever(search_kwargs={"k": 3})
-    st.session_state.retriever = db.as_retriever(search_kwargs={"k": 5})
+    st.session_state.retriever = db.as_retriever(search_kwargs={"k": 10})
 
 
 def initialize_session_state():
@@ -205,6 +208,36 @@ def recursive_file_check(path, docs_all):
         file_load(path, docs_all)
 
 
+def load_csv_as_single_document(path):
+    """
+    CSVファイルを1つの文書として読み込む
+    
+    Args:
+        path: CSVファイルのパス
+    
+    Returns:
+        1つの文書にまとめたDocument
+    """
+    with open(path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        
+        # 全レコードをテキストとして結合
+        content_parts = []
+        for i, row in enumerate(rows, 1):
+            record_text = f"\n【従業員{i}】\n"
+            for key, value in row.items():
+                record_text += f"{key}: {value}\n"
+            content_parts.append(record_text)
+        
+        combined_content = "\n".join(content_parts)
+        
+        return [LangChainDocument(
+            page_content=combined_content,
+            metadata={"source": path, "total_records": len(rows)}
+        )]
+
+
 def file_load(path, docs_all):
     """
     ファイル内のデータ読み込み
@@ -218,8 +251,12 @@ def file_load(path, docs_all):
     # ファイル名（拡張子を含む）を取得
     file_name = os.path.basename(path)
 
+    # CSVファイルの場合は特別処理
+    if file_extension == '.csv':
+        docs = load_csv_as_single_document(path)
+        docs_all.extend(docs)
     # 想定していたファイル形式の場合のみ読み込む
-    if file_extension in ct.SUPPORTED_EXTENSIONS:
+    elif file_extension in ct.SUPPORTED_EXTENSIONS:
         # ファイルの拡張子に合ったdata loaderを使ってデータ読み込み
         loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
         docs = loader.load()

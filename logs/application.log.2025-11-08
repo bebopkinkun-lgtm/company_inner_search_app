@@ -1,0 +1,8 @@
+[INFO] 2025-11-08 12:32:03,370 line 53, in <module>, session_id=64b5beaba91047efbfb99351da2bb8c1: アプリが起動されました。
+[INFO] 2025-11-08 12:32:20,039 line 98, in <module>, session_id=64b5beaba91047efbfb99351da2bb8c1: {'message': '返品について', 'application_mode': '社内文書検索'}
+[INFO] 2025-11-08 12:32:23,895 line 142, in <module>, session_id=64b5beaba91047efbfb99351da2bb8c1: {'message': {'mode': '社内文書検索', 'main_message': '入力内容に関する情報は、以下のファイルに含まれている可能性があります。', 'main_file_path': './data\\サービスについて\\Webサービス「EcoTee Creator」の利用ガイド.docx', 'sub_message': 'その他、ファイルありかの候補を提示します。', 'sub_choices': [{'source': './data\\サービスについて\\サービス提供に関しての各種取り決め.pdf', 'page_number': 2}, {'source': './data\\顧客について\\お客様情報.pdf', 'page_number': 9}]}, 'application_mode': '社内文書検索'}
+[INFO] 2025-11-08 13:17:47,298 line 53, in <module>, session_id=fca8e1c97ebf4ae1bbc9a4d9023e5af6: アプリが起動されました。
+[INFO] 2025-11-08 13:20:38,441 line 53, in <module>, session_id=bba8fcf4a7fc424c83b1ca865db59516: アプリが起動されました。
+[INFO] 2025-11-08 13:23:39,732 line 53, in <module>, session_id=18f0d7e2cf064f6392cf578ecd7eae12: アプリが起動されました。
+[INFO] 2025-11-08 13:24:43,558 line 98, in <module>, session_id=18f0d7e2cf064f6392cf578ecd7eae12: {'message': '社内での裏事情について', 'application_mode': '社内問い合わせ'}
+[INFO] 2025-11-08 13:24:48,274 line 142, in <module>, session_id=18f0d7e2cf064f6392cf578ecd7eae12: {'message': {'mode': '社内問い合わせ', 'answer': '回答に必要な情報が見つかりませんでした。'}, 'application_mode': '社内問い合わせ'}
